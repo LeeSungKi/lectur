@@ -14,7 +14,7 @@
         </a>
     </div>
     </div>
-     <AddBoard v-if="isAddBoard" @close="isAddBoard=false" @submit="onAddBoard"></AddBoard>
+     <AddBoard v-if="isAddBoard" @close="isAddBoard=false"></AddBoard>
     </div>
 </template>
 
@@ -22,21 +22,22 @@
 
 import {board} from '../api/index'
 import AddBoard from './AddBoard.vue'
-import {mapMutations, mapState} from 'vuex'
+import {mapMutations, mapState, mapActions} from 'vuex'
 
     export default {
         components:{AddBoard},
         data(){
             return{
                 loading: false,
-                boards: [],
                 error:''
             }
         },
         computed: {
-          ...mapState([
-          'isAddBoard'
-        ])
+          ...mapState({
+          isAddBoard: 'isAddBoard',
+          boards: 'boards'
+
+          })
         },
         created(){
             this.fetchData()
@@ -50,24 +51,19 @@ import {mapMutations, mapState} from 'vuex'
           ...mapMutations ([
             'SET_IS_ADD_BOARD'
           ]),
+          ...mapActions([
+            'FETCH_BOARDS'
+          ]),
             fetchData(){
                 this.loading = true
-                //board.fetch()함수호출
-                board.fetch()
-                //성공시 board 데이타를 boards에 담아줌
-                .then(data => {
-                    this.boards = data.list
-                })  
-                .finally(()=>{
+                this.FETCH_BOARDS().finally(()=>{
                     this.loading = false
                 }) 
                 },
             /* addBoard() {
                 this.$store.commit('SET_IS_ADD_BOARD',true)
                 }, */
-            onAddBoard(){
-                this.fetchData()  
-                }
+           
         }
         
     }

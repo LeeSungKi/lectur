@@ -1,27 +1,20 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import * as api from '../api'
+import state from './state'
+import getters from './getters'
+import mutations from './mutations'
+import actions from './actions'
 
-Vue.use(Vuex)
+Vue.use(Vuex) 
 
 const store = new Vuex.Store({
-    state: {
-        isAddBoard: false
-    },
-    mutations:{
-        SET_IS_ADD_BOARD (state,toggle){
-            state.isAddBoard = toggle
-        }
-    },
-    actions:{
-        ADD_BOARD(_,{title}){
-            return api.board.create(title)
-        }
-    }
-
+    state,
+    getters,
+    mutations,
+    actions
 })
-
+//어플리케이션구동시 브라우저 저장소확인 토큰여부 체크
 const { token } = localStorage
-store.commit('LOGIN', token)
+store.commit('LOGIN', token) 
  
 export default store

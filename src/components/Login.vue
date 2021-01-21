@@ -22,9 +22,9 @@
   </div>
 </template>
 <script>
-import {auth,setAuthInHeader} from '../api'
-export default {
+import {mapActions} from 'vuex'
 
+export default {
   data() {
     return {
       email: '',
@@ -39,17 +39,15 @@ export default {
     }
   },
   created(){
-            //라우트에 rPath 의 쿼리 문자열  없으면 '/'
-      this.rPath = this.$route.query.rPath || '/' 
+    this.rPath = this.$route.query.rPath || '/' 
   },
   methods: {
+    ...mapActions([
+      'LOGIN'
+    ]),
     onSubmit() {
-        auth.login(this.email,this.password)
+      this.LOGIN({email: this.email, password: this.password} )
             .then(data => {
-                //로컬스토리지에 토큰정보저장후
-                localStorage.setItem('token',data.accessToken)
-                //토큰정보전달 ()
-                setAuthInHeader(data.accessToken) 
                 this.$router.push(this.rPath)
                 
             })

@@ -31,8 +31,6 @@ const request = (method, url, data) => {
             throw result.response
         })
 }
-/* const {token} = localStorage
-if (token) setAuthInHeader(token)  */ 
 
 //헤더값에 토큰정보넣기 login컴포넌트에서 호출
 export const setAuthInHeader = token => {
